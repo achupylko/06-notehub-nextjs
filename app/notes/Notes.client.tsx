@@ -42,12 +42,7 @@ function NotesClient() {
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
-        {
-          <SearchBox
-            inputValue={searchQuery}
-            handleChange={updateSearchQuery}
-          />
-        }
+        {<SearchBox value={searchQuery} handleChange={updateSearchQuery} />}
         {isSuccess && totalPages > 1 && (
           <Pagination
             totalPages={totalPages}
