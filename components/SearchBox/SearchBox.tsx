@@ -1,19 +1,16 @@
 import css from './SearchBox.module.css';
 
 interface SearchBoxProps {
-  inputValue: string;
+  value: string;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function SearchBox({
-  inputValue,
-  handleChange,
-}: SearchBoxProps) {
+export default function SearchBox({ value, handleChange }: SearchBoxProps) {
   return (
     <input
       className={css.input}
       type="text"
-      defaultValue={inputValue}
+      defaultValue={value}
       onChange={handleChange}
       placeholder="Search notes"
     />

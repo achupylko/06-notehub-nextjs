@@ -6,13 +6,23 @@ import { useParams } from 'next/navigation';
 
 import css from './NoteDetails.module.css';
 import { useQuery } from '@tanstack/react-query';
+import Loader from '@/components/Loader/Loader';
+import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 
 export default function NoteDetailsClient() {
   const { id } = useParams<Note>();
 
-  const { data: note } = useQuery({
+  const {
+    data: note,
+    isSuccess,
+    isFetching,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ['note', id],
     queryFn: () => getNoteById(id),
+    refetchOnMount: false,
   });
 
   if (!note) {
@@ -26,14 +36,20 @@ export default function NoteDetailsClient() {
   return (
     <div>
       <div className={css.container}>
-        <div className={css.item}>
-          <div className={css.header}>
-            <h2>{note.title}</h2>
+        {(isLoading || isFetching) && <Loader />}
+
+        {isError && <ErrorMessage message={(error as Error).message} />}
+
+        {isSuccess && (
+          <div className={css.item}>
+            <div className={css.header}>
+              <h2>{note.title}</h2>
+            </div>
+            <p className={css.tag}>{note.tag}</p>
+            <p className={css.content}>{note.content}</p>
+            <p className={css.date}>{formattedDate}</p>
           </div>
-          <p className={css.tag}>{note.tag}</p>
-          <p className={css.content}>{note.content}</p>
-          <p className={css.date}>{formattedDate}</p>
-        </div>
+        )}
       </div>
     </div>
   );

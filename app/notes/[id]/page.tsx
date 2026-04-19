@@ -5,10 +5,9 @@ import {
   QueryClient,
 } from '@tanstack/react-query';
 import NoteDetailsClient from './NoteDetails.client';
-import { Note } from '@/types/note';
 
 type Props = {
-  params: Promise<Note>;
+  params: Promise<{ id: string }>;
 };
 
 export default async function NoteDetails(props: Props) {
