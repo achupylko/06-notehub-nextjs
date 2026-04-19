@@ -1,6 +1,5 @@
 'use client';
 
-import { Note } from '@/types/note';
 import { getNoteById } from '@/lib/api';
 import { useParams } from 'next/navigation';
 
@@ -10,7 +9,7 @@ import Loader from '@/components/Loader/Loader';
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 
 export default function NoteDetailsClient() {
-  const { id } = useParams<Note>();
+  const { id } = useParams<{ id: string }>();
 
   const {
     data: note,
@@ -25,14 +24,6 @@ export default function NoteDetailsClient() {
     refetchOnMount: false,
   });
 
-  if (!note) {
-    return;
-  }
-
-  const formattedDate = note.updatedAt
-    ? `Updated at: ${note.updatedAt}`
-    : `Created at: ${note.createdAt}`;
-
   return (
     <div>
       <div className={css.container}>
@@ -40,14 +31,18 @@ export default function NoteDetailsClient() {
 
         {isError && <ErrorMessage message={(error as Error).message} />}
 
-        {isSuccess && (
+        {isSuccess && note && (
           <div className={css.item}>
             <div className={css.header}>
               <h2>{note.title}</h2>
             </div>
             <p className={css.tag}>{note.tag}</p>
             <p className={css.content}>{note.content}</p>
-            <p className={css.date}>{formattedDate}</p>
+            <p className={css.date}>
+              {note.updatedAt
+                ? `Updated at: ${note.updatedAt}`
+                : `Created at: ${note.createdAt}`}
+            </p>
           </div>
         )}
       </div>
